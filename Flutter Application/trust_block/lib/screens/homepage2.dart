@@ -69,7 +69,8 @@ class HomePage2 extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RenewIP()),
+                  MaterialPageRoute(
+                      builder: (context) => IntellectualPropertyPage()),
                 );
               },
             ),
@@ -648,6 +649,10 @@ class TrackUsagePage extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            Text(
+              'Royalty Earned: 45 ETH',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
