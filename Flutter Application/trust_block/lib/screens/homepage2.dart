@@ -69,8 +69,7 @@ class HomePage2 extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => IntellectualPropertyPage()),
+                  MaterialPageRoute(builder: (context) => RenewIP()),
                 );
               },
             ),
@@ -114,19 +113,307 @@ class OptionButton extends StatelessWidget {
 // Placeholder pages for each option
 
 class AssetsPage extends StatelessWidget {
+  final List<PropertyAsset> propertyAssets = [
+    PropertyAsset(
+      type: 'House',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '4 ETH',
+      inherited: false,
+    ),
+    PropertyAsset(
+      type: 'Land',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '2 ETH',
+      inherited: true,
+    ),
+    PropertyAsset(
+      type: 'Apartment',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '3 ETH',
+      inherited: false,
+    ),
+  ];
+
+  final List<FiscalAsset> fiscalAssets = [
+    FiscalAsset(
+      walletType: 'Custodial',
+      currency: 'ETH',
+      defi: 'On Loan Converted',
+      investmentType: 'Stocks',
+    ),
+    FiscalAsset(
+      walletType: 'Non-Custodial',
+      currency: 'BTC',
+      defi: 'Airdropped',
+      investmentType: 'Bonds',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Assets Page'),
+        title: Text('Asset Page'),
       ),
-      body: Center(
-        child: Text('This is the Assets Page'),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Property Assets',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          DataTable(
+            columns: [
+              DataColumn(label: Text('Type')),
+              DataColumn(label: Text('Coordinates')),
+              DataColumn(label: Text('Purchase Value')),
+              DataColumn(label: Text('Inherited')),
+            ],
+            rows: propertyAssets.map((asset) {
+              return DataRow(cells: [
+                DataCell(Text(asset.type)),
+                DataCell(
+                  InkWell(
+                    child: Text(asset.coordinates),
+                    onTap: () {
+                      // Handle Google Maps integration here
+                    },
+                  ),
+                ),
+                DataCell(Text(asset.purchaseValue)),
+                DataCell(Text(asset.inherited ? 'Yes' : 'No')),
+              ]);
+            }).toList(),
+          ),
+          SizedBox(height: 20.0),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Fiscal Assets',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          DataTable(
+            columns: [
+              DataColumn(label: Text('Wallet Type')),
+              DataColumn(label: Text('Currency')),
+              DataColumn(label: Text('DeFi')),
+              DataColumn(label: Text('Investment Type')),
+            ],
+            rows: fiscalAssets.map((asset) {
+              return DataRow(cells: [
+                DataCell(Text(asset.walletType)),
+                DataCell(Text(asset.currency)),
+                DataCell(Text(asset.defi)),
+                DataCell(Text(asset.investmentType)),
+              ]);
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
 }
 
+class PropertyAsset {
+  final String type;
+  final String coordinates;
+  final String purchaseValue;
+  final bool inherited;
+
+  PropertyAsset({
+    required this.type,
+    required this.coordinates,
+    required this.purchaseValue,
+    required this.inherited,
+  });
+}
+
+class FiscalAsset {
+  final String walletType;
+  final String currency;
+  final String defi;
+  final String investmentType;
+
+  FiscalAsset({
+    required this.walletType,
+    required this.currency,
+    required this.defi,
+    required this.investmentType,
+  });
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Asset Page',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: AssetPage(),
+    );
+  }
+}
+
+class AssetPage extends StatelessWidget {
+  final List<PropertyAsset> propertyAssets = [
+    PropertyAsset(
+      type: 'House',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '4 ETH',
+      inherited: false,
+    ),
+    PropertyAsset(
+      type: 'Land',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '2 ETH',
+      inherited: true,
+    ),
+    PropertyAsset(
+      type: 'Apartment',
+      coordinates: 'Click to view on Google Maps',
+      purchaseValue: '3 ETH',
+      inherited: false,
+    ),
+  ];
+
+  final List<FiscalAsset> fiscalAssets = [
+    FiscalAsset(
+      walletType: 'Custodial',
+      currency: 'ETH',
+      defi: 'On Loan Converted',
+      investmentType: 'Stocks',
+    ),
+    FiscalAsset(
+      walletType: 'Non-Custodial',
+      currency: 'BTC',
+      defi: 'Airdropped',
+      investmentType: 'Bonds',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Asset Page'),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Property Assets',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('Type')),
+                  DataColumn(label: Text('Coordinates')),
+                  DataColumn(label: Text('Purchase Value')),
+                  DataColumn(label: Text('Inherited')),
+                ],
+                rows: propertyAssets.map((asset) {
+                  return DataRow(cells: [
+                    DataCell(Text(asset.type)),
+                    DataCell(
+                      InkWell(
+                        child: Text(asset.coordinates),
+                        onTap: () {
+                          // Handle Google Maps integration here
+                        },
+                      ),
+                    ),
+                    DataCell(Text(asset.purchaseValue)),
+                    DataCell(Text(asset.inherited ? 'Yes' : 'No')),
+                  ]);
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Fiscal Assets',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('Wallet Type')),
+                  DataColumn(label: Text('Currency')),
+                  DataColumn(label: Text('DeFi')),
+                  DataColumn(label: Text('Investment Type')),
+                ],
+                rows: fiscalAssets.map((asset) {
+                  return DataRow(cells: [
+                    DataCell(Text(asset.walletType)),
+                    DataCell(Text(asset.currency)),
+                    DataCell(Text(asset.defi)),
+                    DataCell(Text(asset.investmentType)),
+                  ]);
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class PropertyAsset {
+  final String type;
+  final String coordinates;
+  final String purchaseValue;
+  final bool inherited;
+
+  PropertyAsset({
+    required this.type,
+    required this.coordinates,
+    required this.purchaseValue,
+    required this.inherited,
+  });
+}
+
+class FiscalAsset {
+  final String walletType;
+  final String currency;
+  final String defi;
+  final String investmentType;
+
+  FiscalAsset({
+    required this.walletType,
+    required this.currency,
+    required this.defi,
+    required this.investmentType,
+  });
+}
+*/
 class BlockchainTransactionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -962,7 +1249,7 @@ class IntellectualPropertyPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RenewIPPage()),
+                  MaterialPageRoute(builder: (context) => RenewIP()),
                 );
               },
             ),
@@ -1003,10 +1290,53 @@ class RegisterCopyrightPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register Copyright Page'),
+        title: Text('Register Copyright'),
       ),
-      body: Center(
-        child: Text('This is the Register Copyright Page'),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Name: Divye Bhardwaj',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Public Key: 3F6A9C1FD4D',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Explanation of the Copyright Request',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 5,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement file upload functionality
+              },
+              child: Text('Upload File'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement submit functionality
+              },
+              child: Text('Submit'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go back'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1082,10 +1412,61 @@ class RegisterTradeSecretPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register Trade Secret Page'),
+        title: Text('Register TradeSecret'),
       ),
-      body: Center(
-        child: Text('This is the Register Trade Secret Page'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Name: Divye Bhardwaj',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Public Key: 3F6A9C1FD4D',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Explanation of the Trade Secret Request:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Enter your explanation here',
+              ),
+              maxLines: 4,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // Implement file upload functionality here
+              },
+              child: Text('Upload File'),
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement submit functionality here
+                  },
+                  child: Text('Submit'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Go Back'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1096,27 +1477,144 @@ class FilePatentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('File Patent Page'),
+        title: Text('Register your File Patent'),
       ),
-      body: Center(
-        child: Text('This is the File Patent Page'),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Name: Divye Bhardwaj',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Public Key: 3F6A9C1FD4D',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Explanation of the File Patent Request',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 5,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement file upload functionality
+              },
+              child: Text('Upload File'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement submit functionality
+              },
+              child: Text('Submit'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go back'),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class RenewIPPage extends StatelessWidget {
+class RenewIP extends StatelessWidget {
+  final List<IntellectualProperty> intellectualProperties = [
+    IntellectualProperty(
+      id: 'IP001',
+      username: 'JohnDoe',
+      publicKey: '12345',
+      isActive: true,
+    ),
+    IntellectualProperty(
+      id: 'IP002',
+      username: 'JaneSmith',
+      publicKey: '67890',
+      isActive: false,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Renew IP Page'),
+        title: Text('Intellectual Property Page'),
       ),
-      body: Center(
-        child: Text('This is the Renew IP Page'),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Intellectual Properties',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('IP ID')),
+                  DataColumn(label: Text('Username')),
+                  DataColumn(label: Text('Public Key')),
+                  DataColumn(label: Text('Status')),
+                  DataColumn(label: Text('Action')),
+                ],
+                rows: intellectualProperties.map((property) {
+                  return DataRow(cells: [
+                    DataCell(Text(property.id)),
+                    DataCell(Text(property.username)),
+                    DataCell(Text(property.publicKey)),
+                    DataCell(Text(property.isActive ? 'Active' : 'Expired')),
+                    DataCell(
+                      property.isActive
+                          ? Text('---')
+                          : ElevatedButton(
+                              onPressed: () {
+                                // Handle renew action here
+                              },
+                              child: Text('Renew'),
+                            ),
+                    ),
+                  ]);
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class IntellectualProperty {
+  final String id;
+  final String username;
+  final String publicKey;
+  final bool isActive;
+
+  IntellectualProperty({
+    required this.id,
+    required this.username,
+    required this.publicKey,
+    required this.isActive,
+  });
 }
 
 class ManageIdentityPage extends StatelessWidget {
@@ -1124,10 +1622,160 @@ class ManageIdentityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Identity Page'),
+        title: Text('Manage Identity'),
       ),
       body: Center(
-        child: Text('This is the Manage Identity Page'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Manage your identity',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            Table(
+              border: TableBorder.all(),
+              children: [
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Options'),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Action'),
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Your Next kin is: Rishabh Prasad'),
+                      ),
+                    ),
+                    TableCell(
+                      child: TextButton(
+                        onPressed: () {
+                          // Perform the action when Edit button is pressed
+                          // For example, navigate to a page for editing the public key
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditNextKinPage(),
+                            ),
+                          );
+                        },
+                        child: Text('Edit'),
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Change your private key'),
+                      ),
+                    ),
+                    TableCell(
+                      child: TextButton(
+                        onPressed: () {
+                          // Perform the action when Edit button is pressed
+                          // For example, navigate to a page for changing the private key
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangePrivateKeyPage(),
+                            ),
+                          );
+                        },
+                        child: Text('Edit'),
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            'Update Biometrics (only for people who just turned 18)'),
+                      ),
+                    ),
+                    TableCell(
+                      child: TextButton(
+                        onPressed: () {
+                          // Perform the action when Edit button is pressed
+                          // For example, navigate to a page for updating biometrics
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateBiometricsPage(),
+                            ),
+                          );
+                        },
+                        child: Text('Edit'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Example pages for editing actions
+
+class EditNextKinPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Next Kin'),
+      ),
+      body: Center(
+        child: Text('Edit Next Kin Page'),
+      ),
+    );
+  }
+}
+
+class ChangePrivateKeyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Change Private Key'),
+      ),
+      body: Center(
+        child: Text('Change Private Key Page'),
+      ),
+    );
+  }
+}
+
+class UpdateBiometricsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Update Biometrics'),
+      ),
+      body: Center(
+        child: Text('Update Biometrics Page'),
       ),
     );
   }
