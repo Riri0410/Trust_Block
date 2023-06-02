@@ -3,6 +3,7 @@ import 'package:trust_block/responsive/dimensions.dart';
 import 'package:trust_block/responsive/mobileScreenLayout.dart';
 import 'package:trust_block/responsive/responsive.dart';
 import 'package:trust_block/responsive/webScreenLayout.dart';
+import 'package:trust_block/screens/dashboard.dart';
 import 'package:trust_block/screens/gpt_home_page.dart';
 import 'package:trust_block/screens/homepage.dart';
 import 'package:trust_block/screens/homepage2.dart';
@@ -29,6 +30,6 @@ class MyApp extends StatelessWidget {
             webScreenLayout: WebScreenLayout(),
             mobileScreenLayout: MobileScreenLayout()));
             */
-        home: HomePage2());
+        home: DashboardDemo());
   }
 }
