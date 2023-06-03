@@ -34,8 +34,10 @@ dependencies:
   camera_avfoundation: ^0.9.13+2
   capture_detector: ^0.0.1
   cupertino_icons: ^1.0.2
+  fl_chart: ^0.62.0
   flutter:
     sdk: flutter
+  flutter_charts: ^0.5.1
   flutter_svg: ^2.0.6
   font_awesome_flutter: ^10.4.0
   gradle_properties: ^1.0.0
