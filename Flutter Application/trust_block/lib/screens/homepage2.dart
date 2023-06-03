@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trust_block/screens/loginPage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,83 +15,120 @@ class HomePage2 extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home Page'),
       ),
-      body: Center(
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(16.0),
+        children: [
+          HomeOption(
+            optionName: 'Assets',
+            icon: Icons.account_balance_wallet,
+            onPressed: () {
+              // Handle option 1 navigation
+              print('Option 1 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Blockchain Transactions',
+            icon: Icons.swap_horiz,
+            onPressed: () {
+              // Handle option 2 navigation
+              print('Option 2 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Verification Status',
+            icon: Icons.verified_user,
+            onPressed: () {
+              // Handle option 3 navigation
+              print('Option 3 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Track Usage',
+            icon: Icons.track_changes,
+            onPressed: () {
+              // Handle option 4 navigation
+              print('Option 4 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Cast Ballot',
+            icon: Icons.how_to_vote,
+            onPressed: () {
+              // Handle option 5 navigation
+              print('Option 5 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Intellectual Property Portal',
+            icon: Icons.business_center,
+            onPressed: () {
+              // Handle option 6 navigation
+              print('Option 6 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Manage Identity',
+            icon: Icons.person,
+            onPressed: () {
+              // Handle option 7 navigation
+              print('Option 7 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Log out',
+            icon: Icons.logout,
+            onPressed: () {
+              // Handle option 8 navigation
+              print('Option 8 selected');
+            },
+          ),
+          HomeOption(
+            optionName: 'Register as Candidate',
+            icon: Icons.how_to_vote,
+            onPressed: () {
+              // Handle option 9 navigation
+              print('Option 9 selected');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomeOption extends StatelessWidget {
+  final String optionName;
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  HomeOption({
+    required this.optionName,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      child: InkWell(
+        onTap: onPressed,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            OptionButton(
-              optionText: 'Assets',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AssetsPage()),
-                );
-              },
+            Icon(
+              icon,
+              size: 48.0,
             ),
-            OptionButton(
-              optionText: 'Blockchain Transactions',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BlockchainTransactionsPage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Verification Status',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => VerificationStatusPage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Track Usage',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TrackUsagePage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Cast Ballot',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CastBallotPage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Intellectual Property Portal',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => IntellectualPropertyPage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Manage Identity',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ManageIdentityPage()),
-                );
-              },
-            ),
-            OptionButton(
-              optionText: 'Log out',
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
-                // Perform logout functionality here
-              },
+            SizedBox(height: 8.0),
+            Text(
+              optionName,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

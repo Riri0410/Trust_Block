@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:trust_block/screens/loginPage.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:http/http.dart';
 
 void main() {
   runApp(DashboardDemo());
@@ -82,6 +85,17 @@ class HomePage extends StatelessWidget {
             },
           ),
           HomeOption(
+            optionName: 'Register as Election Candidate',
+            icon: Icons.how_to_vote,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RegisterCandidatePage()),
+              );
+            },
+          ),
+          HomeOption(
             optionName: 'Intellectual Property Portal',
             icon: Icons.business_center,
             onPressed: () {
@@ -106,11 +120,10 @@ class HomePage extends StatelessWidget {
             optionName: 'Log out',
             icon: Icons.logout,
             onPressed: () {
-              /* Navigator.push(
+              Navigator.push(
                 context,
-                //MaterialPageRoute(builder: (context) => LogoutPage()),
-              )*/
-              ;
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
             },
           ),
         ],
@@ -686,6 +699,194 @@ class TrackUsagePage extends StatelessWidget {
             Text(
               'Royalty Earned: 45 ETH',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class RegisterCandidatePage extends StatefulWidget {
+  @override
+  _RegisterCandidatePageState createState() => _RegisterCandidatePageState();
+}
+
+
+class _RegisterCandidatePageState extends State<RegisterCandidatePage> {
+  final TextEditingController _nameController = TextEditingController();
+  String _candidateName = '';
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Register as Candidate'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'To register, fill in these details:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                hintText: 'Enter Your Name',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 1,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _candidateName = _nameController.text;
+                });
+                print('Candidate Name: $_candidateName');
+              },
+              child: Text('Register'),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Entered Candidate Name: $_candidateName',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Go back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+*/
+class RegisterCandidatePage extends StatefulWidget {
+  @override
+  _RegisterCandidatePageState createState() => _RegisterCandidatePageState();
+}
+
+class _RegisterCandidatePageState extends State<RegisterCandidatePage> {
+  final _textController = TextEditingController();
+
+  Future<void> sendTransaction() async {
+    final inputValue = _textController.text;
+
+    if (inputValue.isEmpty) {
+      return; // Skip transaction if input value is empty
+    }
+    final web3 = Web3Client(
+        'https://near-mainnet.infura.io/v3/7457b33aec174799a8a0d6d65a4e7b4a',
+        Client());
+    final contractAddress =
+        EthereumAddress.fromHex('0x2323F7BEc895F34DA9C023c2a90Fc6d0F1f04aBc');
+    final contractABI = '''[
+      {
+        "inputs": [
+          {"internalType": "string", "name": "_name", "type": "string"}
+        ],
+        "name": "setName",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {"internalType": "string", "name": "", "type": "string"}
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ]'''; // Replace with the contract's ABI
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(contractABI,
+          'registerCandidate'), // Replace 'ContractName' with the actual contract name
+      contractAddress,
+    );
+    final credentials = await web3.credentialsFromPrivateKey(
+        '018c0ff078deccedd2b7562e0dba8c33f15a047b5f236a9e1273d11e4846d242');
+    final senderAddress = await credentials.extractAddress();
+
+    final function = contract.function('setName');
+    final data = function.encodeCall(<String>[inputValue]);
+
+    final transaction = Transaction.callContract(
+      contract: contract,
+      function: function,
+      parameters: <dynamic>[inputValue],
+      from: senderAddress,
+      maxGas: 10000, // Adjust gas limit as needed
+    );
+
+    final networkId = await web3.getNetworkId();
+    print("Chain ID: $networkId");
+    final signedTransaction = await web3.signTransaction(
+      credentials,
+      transaction, // Replace with the correct chain ID (e.g., 3 for Ropsten)
+    );
+
+    final result = await web3.sendRawTransaction(await signedTransaction);
+
+// Handle transaction result
+    print(result);
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Register as Candidate'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'To register, fill in these details:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _textController,
+              decoration: InputDecoration(
+                hintText: 'Enter Your Name',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 1,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: sendTransaction,
+              child: Text('Register'),
             ),
           ],
         ),
