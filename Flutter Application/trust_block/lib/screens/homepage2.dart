@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trust_block/screens/loginPage.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -86,6 +87,8 @@ class HomePage2 extends StatelessWidget {
             OptionButton(
               optionText: 'Log out',
               onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
                 // Perform logout functionality here
               },
             ),

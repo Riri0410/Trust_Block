@@ -7,6 +7,7 @@ import 'package:trust_block/screens/dashboard.dart';
 import 'package:trust_block/screens/gpt_home_page.dart';
 import 'package:trust_block/screens/homepage.dart';
 import 'package:trust_block/screens/homepage2.dart';
+import 'package:trust_block/screens/loginPage.dart';
 import 'package:trust_block/screens/loginui.dart';
 import 'package:trust_block/utils/colors.dart';
 
@@ -30,6 +31,6 @@ class MyApp extends StatelessWidget {
             webScreenLayout: WebScreenLayout(),
             mobileScreenLayout: MobileScreenLayout()));
             */
-        home: DashboardDemo());
+        home: LoginPage());
   }
 }
